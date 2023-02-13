@@ -1,0 +1,11 @@
+[package]
+name = "wegmans_coupons"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+reqwest = { version = "0.11" }
+serde_json = { version = "1.0" }
+dotenv = "0.15.0"
+fantoccini = "0.19.3"
