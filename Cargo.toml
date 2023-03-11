@@ -9,7 +9,7 @@ path = "src/wegmans_client/lib.rs"
 
 [dependencies]
 tokio = { version = "1", features = ["full"] }
-reqwest = { version = "0.11" }
+reqwest = { version = "0.11", features = ['native-tls-vendored'] }
 serde_json = { version = "1.0" }
 serde = { version = "1.0", features = ["derive"] }
 dotenv = "0.15.0"
