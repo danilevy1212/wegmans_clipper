@@ -1,4 +1,4 @@
-use wegmans_coupons_client::http_client::Client;
+use wegmans_coupons_client::http_client::coupon_client::CouponClient;
 
 use anyhow::Result;
 use dotenv::dotenv;
@@ -10,7 +10,7 @@ async fn main() -> Result<()> {
 
     let cookie = env::var("WEGMANS_COOKIE")?;
 
-    let wegmans_http_client = Client::new(&cookie)?;
+    let wegmans_http_client = CouponClient::new(&cookie)?;
 
     dbg!(wegmans_http_client.get_coupons().await?);
 
