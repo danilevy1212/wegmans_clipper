@@ -10,10 +10,15 @@
 // docker compose up -d
 // ```
 
-use dotenv::dotenv;
-use wegmans_coupons_client::webdriver_client::WebDriverClient;
-use std::env;
 use anyhow::Result;
+use dotenv::dotenv;
+use std::env;
+use std::process::Stdio;
+use tokio::process::Command;
+use wegmans_coupons_client::webdriver_client::WebDriverClient;
+
+const WEBDRIVER_HOST: &str = "127.0.0.1";
+const WEBDRIVER_PORT: u16 = 4444;
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -23,10 +28,15 @@ async fn main() -> Result<()> {
     // Get email and password
     let email = &env::var("WEGMANS_EMAIL")?;
     let password = &env::var("WEGMANS_PASSWORD")?;
-    let web_driver_url = &env::var("WEB_DRIVER_HOST_URL")?;
+
+    // Session
+    let _ = Command::new("geckodriver")
+        .kill_on_drop(true)
+        .stdout(Stdio::null())
+        .spawn()?;
 
     // Connect to webdriver server
-    let client = WebDriverClient::new(web_driver_url).await?;
+    let client = WebDriverClient::new(&format!("http://{WEBDRIVER_HOST}:{WEBDRIVER_PORT}")).await?;
 
     // Login and return session cookie
     dbg!(client.get_session_cookie(email, password).await?);

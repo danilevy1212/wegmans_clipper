@@ -4,10 +4,8 @@ with pkgs;
 
 mkShell {
   buildInputs = [
-    openssl
+    geckodriver
+    firefox
     pkg-config
   ];
-  shellHook = ''
-    export OPEN_SSL_DIR=${openssl.out}/lib
-  '';
 }

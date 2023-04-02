@@ -21,6 +21,6 @@ impl HandleError for Response {
             ));
         }
 
-        return Ok(self)
+        return Ok(self);
     }
 }

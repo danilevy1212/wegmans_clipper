@@ -1,4 +1,4 @@
-use crate::constants::{WEGMANS_SESSION_COOKIE_NAME, WEGMANS_BASE_URL};
+use crate::constants::{WEGMANS_BASE_URL, WEGMANS_SESSION_COOKIE_NAME};
 
 use anyhow::{Context, Result};
 use fantoccini::{Client, ClientBuilder, Locator::Css};
