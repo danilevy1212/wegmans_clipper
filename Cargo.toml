@@ -17,3 +17,4 @@ fantoccini = "0.19.3"
 anyhow = "1.0.69"
 async-trait = "0.1.66"
 futures = "0.3.27"
+clap = { version = "4.2.1", features = ["derive"] }
