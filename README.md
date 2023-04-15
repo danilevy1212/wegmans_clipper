@@ -2,7 +2,7 @@
 
 ## Description
 
-`Wegmans auto-clipper` is a collection of utilities that automate clipping [https://shop.wegmans.com/shop/coupons]("Digital Coupons") from the Wegmans website. 
+`wegmans_clipper` is a collection of utilities that automate clipping [https://shop.wegmans.com/shop/coupons]("Digital Coupons") from the Wegmans website. 
 
 The main utility is rust binary that connects to the wegmans API, logins on the user behalf and clips any digital coupons that are unclipped. This binary will call [https://www.selenium.dev/documentation/webdriver](webdriver) capable program for the login portion. [https://github.com/mozilla/geckodriver](GeckoDriver) is used by default.
 
