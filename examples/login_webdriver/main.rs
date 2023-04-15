@@ -7,7 +7,7 @@
 // ### geckodriver
 //
 // ```text
-// docker compose up -d
+// docker compose up geckodriver-dev -d
 // ```
 
 use anyhow::Result;

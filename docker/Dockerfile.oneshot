@@ -6,7 +6,7 @@ RUN cargo build --release
 
 FROM instrumentisto/geckodriver:debian as oneshot-runner
 
-COPY --from=builder /app/dir/target/release/wegmans_coupons /usr/bin/wegmans_coupons
+COPY --from=builder /app/dir/target/release/wegmans_clipper /usr/bin/wegmans_clipper
 
 ARG WEGMANS_EMAIL
 ARG WEGMANS_PASSWORD
@@ -20,4 +20,4 @@ RUN echo ${WEGMANS_PASSWORD}
 
 # NOTE  This is pretty unsafe, so don't publish this image!
 ENTRYPOINT [ "sh" ] 
-CMD ["-c", "RUST_LOG=debug wegmans_coupons --email ${WEGMANS_EMAIL} --password ${WEGMANS_PASSWORD} --webdriver-args='--binary=/opt/firefox/firefox'"]
+CMD ["-c", "RUST_LOG=debug wegmans_clipper --email ${WEGMANS_EMAIL} --password ${WEGMANS_PASSWORD} --webdriver-args='--binary=/opt/firefox/firefox'"]

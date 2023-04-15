@@ -2,7 +2,7 @@
 
 ## Description
 
-`wegmans_clipper` is a collection of utilities that automate clipping [https://shop.wegmans.com/shop/coupons]("Digital Coupons") from the Wegmans website. 
+`wegmans_clipper` is a collection of utilities that automate clipping [https://shop.wegmans.com/shop/coupons](Digital Coupons) from the Wegmans website. 
 
 The main utility is rust binary that connects to the Wegmans HTTP API, logins on the user behalf and clips any digital coupons that are unclipped. This binary will execute and connect to any [https://www.selenium.dev/documentation/webdriver](webdriver) capable program for the login portion. [https://github.com/mozilla/geckodriver](GeckoDriver) is used by default.
 
@@ -26,7 +26,7 @@ The docker images use some unsafe trickery to hold on to the provided credential
 ### Binary
 
 ```bash
-Usage: wegmans_autoclipper [OPTIONS] --email <EMAIL> --password <PASSWORD>
+Usage: wegmans_clipper [OPTIONS] --email <EMAIL> --password <PASSWORD>
 
 Options:
       --webdriver-url <WEBDRIVER_URL>          Webdriver server url [default: http://localhost:4444]
