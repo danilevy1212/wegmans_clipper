@@ -2,16 +2,16 @@
 
 ## Description
 
-`wegmans_clipper` is a collection of utilities that automate clipping [https://shop.wegmans.com/shop/coupons](Digital_Coupons) from the Wegmans website. 
+`wegmans_clipper` is a collection of utilities that automate clipping ["Digital Coupons"](https://shop.wegmans.com/shop/coupons) from the Wegmans website. 
 
-The main utility is rust binary that connects to the Wegmans HTTP API, logins on the user behalf and clips any digital coupons that are unclipped. This binary will execute and connect to any [https://www.selenium.dev/documentation/webdriver](webdriver) capable program for the login portion. [https://github.com/mozilla/geckodriver](GeckoDriver) is used by default.
+The main utility is rust binary that connects to the Wegmans HTTP API, logins on the user behalf and clips any digital coupons that are unclipped. This binary will execute and connect to any [WebDriver ](https://www.selenium.dev/documentation/webdriver) capable program for the login portion. [GeckoDriver](https://github.com/mozilla/geckodriver) is used by default.
 
-For ease of use, docker images are provided at the [./docker/](docker) folder:
+For ease of use, docker images are provided at the [docker](./docker/) folder:
 
-- [./docker/Dockerfile.one-shot](one-shot): Provides all dependencies and calls the binary.
-- [./docker/Dockerfile.cronjob](cronjob): Wraps the binary in a cronjob, which is called on a set schedule.
+- [one-shot](./docker/Dockerfile.one-shot): Provides all dependencies and calls the binary.
+- [cronjob ](./docker/Dockerfile.cronjob): Wraps the binary in a cronjob, which is called on a set schedule.
 
-See [./compose.yaml](compose.yaml) for how to build these images.
+See [compose.yaml](./compose.yaml) for how to build these images.
 
 ### WARNING
 
