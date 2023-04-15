@@ -1,0 +1,8 @@
+target
+compose.yaml
+docker
+Footer
+.direnv
+.dockerignore
+.git
+.gitignore

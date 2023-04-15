@@ -1,0 +1,23 @@
+FROM rust:1.68.2 as builder
+
+WORKDIR /app/dir
+COPY . .
+RUN cargo build --release
+
+FROM instrumentisto/geckodriver:debian as oneshot-runner
+
+COPY --from=builder /app/dir/target/release/wegmans_coupons /usr/bin/wegmans_coupons
+
+ARG WEGMANS_EMAIL
+ARG WEGMANS_PASSWORD
+
+# So `sh` can pick the args up
+ENV WEGMANS_EMAIL=${WEGMANS_EMAIL}
+ENV WEGMANS_PASSWORD=${WEGMANS_PASSWORD}
+
+RUN echo ${WEGMANS_EMAIL}
+RUN echo ${WEGMANS_PASSWORD}
+
+# NOTE  This is pretty unsafe, so don't publish this image!
+ENTRYPOINT [ "sh" ] 
+CMD ["-c", "RUST_LOG=debug wegmans_coupons --email ${WEGMANS_EMAIL} --password ${WEGMANS_PASSWORD} --webdriver-args='--binary=/opt/firefox/firefox'"]

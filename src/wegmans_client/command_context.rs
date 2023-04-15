@@ -1,5 +1,5 @@
 use crate::webdriver_client::WebDriverClient;
-use anyhow::Result;
+use anyhow::{Result, Context};
 use std::future::Future;
 use std::process::Stdio;
 use tokio::process::Command;
@@ -7,6 +7,7 @@ use tokio::process::Command;
 pub struct WebDriverContext<'a> {
     webdriver_url: &'a str,
     webdriver_command: &'a str,
+    webdriver_args: Vec<String>,
     email: &'a str,
     password: &'a str,
 }
@@ -15,6 +16,7 @@ impl<'a> WebDriverContext<'a> {
     pub fn new(
         webdriver_url: &'a str,
         webdriver_command: &'a str,
+        webdriver_args: Vec<String>,
         email: &'a str,
         password: &'a str,
     ) -> Self {
@@ -22,6 +24,7 @@ impl<'a> WebDriverContext<'a> {
             email,
             password,
             webdriver_url,
+            webdriver_args,
             webdriver_command,
         }
     }
@@ -38,10 +41,12 @@ impl<'a> WebDriverContext<'a> {
         Fut: Future<Output = Result<()>>,
     {
         let mut gecko = Command::new(self.webdriver_command)
+            .args(&self.webdriver_args)
             .kill_on_drop(true)
             .stdout(Stdio::null())
             .stderr(Stdio::null())
-            .spawn()?;
+            .spawn()
+            .context(format!("{0} not in path", self.webdriver_command))?;
 
         let client = WebDriverClient::new(self.webdriver_url).await?;
 

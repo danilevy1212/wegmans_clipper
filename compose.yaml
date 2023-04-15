@@ -1,8 +1,26 @@
 version: "3"
 services:
-  geckodriver:
-    # NOTE For raspberry-pi's: https://github.com/seleniumhq-community/docker-seleniarm#running-the-arm-container-images
+  geckodriver-dev:
     container_name: standalone-firefox
     image: selenium/standalone-firefox
     ports:
       - 4444:4444
+  coupons_oneshot:
+    build:
+      context: ./
+      args:
+      - WEGMANS_EMAIL=${WEGMANS_EMAIL:?Missing a wegmans's email account}
+      - WEGMANS_PASSWORD=${WEGMANS_PASSWORD:?Missing a wegmans's account password}
+      dockerfile: ./docker/Dockerfile.oneshot
+      target: oneshot-runner
+  coupons_cronjob:
+    build:
+      context: ./
+      args:
+      - WEGMANS_CRON_COMMAND=wegmans_coupons --email ${WEGMANS_EMAIL} --password ${WEGMANS_PASSWORD}
+      - WEGMANS_CRON_FILE_PATH=/etc/cron.d/wegmans_coupons
+      - WEGMANS_EMAIL=${WEGMANS_EMAIL:?Missing a wegmans's email account}
+      - WEGMANS_PASSWORD=${WEGMANS_PASSWORD:?Missing a wegmans's account password}
+      - WEGMANS_CRON_SCHEDULE=${WEGMANS_CRON_SCHEDULE:-0 15 * * 1,5}
+      dockerfile: ./docker/Dockerfile.cronjob
+      target: cronjob-runner

@@ -1,10 +1,12 @@
 use crate::constants::{WEGMANS_BASE_URL, WEGMANS_SESSION_COOKIE_NAME};
 
 use anyhow::{Context, Result};
-use fantoccini::{Client, ClientBuilder, Locator::Css};
+use fantoccini::{
+    Client, ClientBuilder,
+    Locator::{Css, Id},
+};
+use log::info;
 use reqwest::Url;
-use std::time::Duration;
-use tokio::time::sleep;
 
 pub struct WebDriverClient(Client);
 
@@ -14,7 +16,7 @@ impl WebDriverClient {
             ClientBuilder::native()
                 .connect(url)
                 .await
-                .with_context(|| format!("Could not connect with url={url}"))?,
+                .context(format!("Failed to connect with url=\"{url}\""))?,
         ))
     }
 
@@ -26,29 +28,40 @@ impl WebDriverClient {
         client.goto(&url).await?;
 
         // Wait to be redirected
-        client.wait().for_element(Css("#next")).await?;
+        client
+            .wait()
+            .for_element(Css("#next"))
+            .await
+            .context("Failed to enter login page")?;
+
+        info!("Login with email: \"{email}\" password: \"{password}\"");
 
         // Enter email, password and submit
         client
             .form(Css("#localAccountForm"))
-            .await?
+            .await
+            .context("Failed to find user login form")?
             .set(Css("#signInName"), email)
-            .await?
+            .await
+            .context("Failed to add email")?
             .set(Css("#password"), password)
-            .await?
+            .await
+            .context("Failed to add password")?
             .submit_with(Css("#next"))
-            .await?;
+            .await
+            .context("Failed to submit login form")?;
 
         // Wait to be redirected again
         client
             .wait()
-            .for_element(Css("#sticky-react-header"))
-            .await?;
+            .for_element(Id("wegmansLoginCompLabel"))
+            .await
+            .context("Failed to login")?;
 
-        // Make sure to have the most recent cookie, 10 seconds is overkill but that is OK
-        sleep(Duration::from_secs(5)).await;
-
-        let cookie = client.get_named_cookie(WEGMANS_SESSION_COOKIE_NAME).await?;
+        let cookie = client
+            .get_named_cookie(WEGMANS_SESSION_COOKIE_NAME)
+            .await
+            .context("Couldn't retrieve session cookie")?;
         let (cookie_name, cookie_value) = cookie.name_value();
 
         Ok(format!("{cookie_name}={cookie_value}"))
@@ -58,6 +71,6 @@ impl WebDriverClient {
         self.0
             .close()
             .await
-            .with_context(|| "Error while closing connection")
+            .context("Failed to close connection with webdriver")
     }
 }
