@@ -1,8 +1,9 @@
 use anyhow::{Ok, Result};
 use clap::Parser;
 use futures::future::join_all;
-use log::{error, info};
+use log::{debug, error, info};
 use wegmans_coupons_client::command_context::WebDriverContext;
+use wegmans_coupons_client::coupons_dto::CouponDTO;
 use wegmans_coupons_client::http_client::coupon_client::CouponClient;
 
 #[derive(Parser, Debug)]
@@ -17,6 +18,16 @@ struct Args {
     email: String,
     #[arg(short, long, help = "Wegmans user password")]
     password: String,
+}
+
+fn exit_with_coupons(coupons: Vec<CouponDTO>) -> Result<()> {
+    info!("Listing clipped coupons");
+
+    for coupon in coupons.iter() {
+        info!("Coupon: {}", coupon.name);
+    }
+
+    Ok(())
 }
 
 #[tokio::main]
@@ -42,18 +53,27 @@ async fn main() -> Result<()> {
         let wegmans_client = CouponClient::new(&session_cookie)?;
         let coupons = wegmans_client.get_coupons().await?;
 
+        debug!("{} coupons found", coupons.items.len());
+
         if !coupons.items.iter().any(|c| !c.clipped) {
             info!("No coupons to clip");
-            return Ok(());
+            return exit_with_coupons(coupons.items);
         }
 
-        let coupon_calls = join_all(coupons.items.into_iter().filter(|c| !c.clipped).map(|c| {
-            let coupon_client = wegmans_client.clone();
-            tokio::spawn(async move {
-                info!("Clipping coupon: {:?}", c);
-                coupon_client.clip_coupon(&c.id).await
-            })
-        }))
+        let coupon_calls = join_all(
+            coupons
+                .items
+                .clone()
+                .into_iter()
+                .filter(|c| !c.clipped)
+                .map(|c| {
+                    let coupon_client = wegmans_client.clone();
+                    tokio::spawn(async move {
+                        info!("Clipping coupon: {:?}", c);
+                        coupon_client.clip_coupon(&c.id).await
+                    })
+                }),
+        )
         .await;
 
         for call in coupon_calls.into_iter() {
@@ -72,7 +92,7 @@ async fn main() -> Result<()> {
             info!("New coupon clipped: {:?}", coupon_dto.unwrap());
         }
 
-        Ok(())
+        exit_with_coupons(coupons.items)
     })
     .await?)
 }

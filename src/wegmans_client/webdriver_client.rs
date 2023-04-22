@@ -3,7 +3,7 @@ use crate::constants::{WEGMANS_BASE_URL, WEGMANS_SESSION_COOKIE_NAME};
 use anyhow::{Context, Result};
 use fantoccini::{
     Client, ClientBuilder,
-    Locator::{Css, Id},
+    Locator::{Css, XPath},
 };
 use log::info;
 use reqwest::Url;
@@ -54,9 +54,9 @@ impl WebDriverClient {
         // Wait to be redirected again
         client
             .wait()
-            .for_element(Id("wegmansLoginCompLabel"))
+            .for_element(XPath("//*[@id='wegmansLoginCompLabel']/span"))
             .await
-            .context("Failed to login")?;
+            .context("Failed to login or could not find login navigation bar")?;
 
         let cookie = client
             .get_named_cookie(WEGMANS_SESSION_COOKIE_NAME)

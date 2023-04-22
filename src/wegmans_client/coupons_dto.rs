@@ -1,12 +1,13 @@
 use serde::Deserialize;
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct OffersDTO {
-    pub items: Vec<Coupon>,
+    pub items: Vec<CouponDTO>,
 }
 
-#[derive(Deserialize, Debug)]
-pub struct Coupon {
+#[derive(Deserialize, Debug, Clone)]
+pub struct CouponDTO {
     pub clipped: bool,
     pub id: String,
+    pub name: String,
 }

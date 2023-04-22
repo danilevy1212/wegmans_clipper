@@ -1,6 +1,6 @@
 use super::{client_provider::provide_client, handle_error::HandleError};
 use crate::constants::WEGMANS_BASE_URL;
-use crate::coupons_dto::{Coupon, OffersDTO};
+use crate::coupons_dto::{CouponDTO, OffersDTO};
 use anyhow::{Ok, Result};
 use reqwest::{
     header::{self, HeaderMap, HeaderValue},
@@ -45,7 +45,7 @@ impl CouponClient {
         Ok(response.json().await?)
     }
 
-    pub async fn clip_coupon(&self, id: &str) -> Result<Coupon> {
+    pub async fn clip_coupon(&self, id: &str) -> Result<CouponDTO> {
         let url = Url::parse(WEGMANS_BASE_URL)?.join(&format!("/api/v2/offers/{id}"))?;
 
         let response = self
