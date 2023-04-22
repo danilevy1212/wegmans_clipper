@@ -39,25 +39,25 @@ Options:
 
 ### Docker Compose
 
-Cronjob
+Cronjob:
 
 ```bash
 docker compose up coupons_cronjob
 ```
 
-One-shot
+One-shot:
 
 ```bash
 docker compose up coupons_oneshot
 ```
 
-Build aarch64, binary will be in `target/aarch64-unknown-linux-gnu`
+Build aarch64, binary will be in `target/aarch64-unknown-linux-gnu`:
 
 ```bash
 docker compose up build_aarch64
 ```
 
-Build x86_64, binary will be in `target/x86_64-unknown-linux-gnu`.
+Build x86_64, binary will be in `target/x86_64-unknown-linux-gnu`:
 
 ```bash
 docker compose up build_x86_64
