@@ -63,6 +63,10 @@ Build x86_64, binary will be in `target/x86_64-unknown-linux-gnu`.
 docker compose up build_x86_64
 ```
 
+## Deployment
+
+You can check an example of how to deploy this utility for yourself [here.](https://github.com/danilevy1212/services/tree/main/wegmans_clipper)
+
 ## Why are you using a headless browser and HTTP calls?
 
 Originally, I used the WebDriver server to get through the authentication flow. This allowed me to iterate easily to reverse engineer the rest to HTTP calls. However, when it came to figure out how to do login worked using HTTP only, I kept getting banned by cloudflare's anti web-crawling measures. Finally, after much tinkering around, I gave up. Though the final result is a frankenstein monster of HTTP clients and headless browsers that I am not totally happy about, it does it's job.
