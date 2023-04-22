@@ -24,3 +24,15 @@ services:
       - WEGMANS_CRON_SCHEDULE=${WEGMANS_CRON_SCHEDULE:-0 15 * * 1,5}
       dockerfile: ./docker/Dockerfile.cronjob
       target: cronjob-runner
+  build_x86_64:
+    build:
+      context: ./
+      dockerfile: ./docker/Dockerfile.build-x86_64
+    volumes:
+      - ./:/app
+  build_aarch64:
+    build:
+      context: ./
+      dockerfile: ./docker/Dockerfile.build-aarch64
+    volumes:
+      - ./:/app

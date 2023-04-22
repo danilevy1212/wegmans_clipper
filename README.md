@@ -51,6 +51,18 @@ One-shot
 docker compose up coupons_oneshot
 ```
 
+Build aarch64, binary will be in `target/aarch64-unknown-linux-gnu`
+
+```bash
+docker compose up build_aarch64
+```
+
+Build x86_64, binary will be in `target/x86_64-unknown-linux-gnu`.
+
+```bash
+docker compose up build_x86_64
+```
+
 ## Why are you using a headless browser and HTTP calls?
 
 Originally, I used the WebDriver server to get through the authentication flow. This allowed me to iterate easily to reverse engineer the rest to HTTP calls. However, when it came to figure out how to do login worked using HTTP only, I kept getting banned by cloudflare's anti web-crawling measures. Finally, after much tinkering around, I gave up. Though the final result is a frankenstein monster of HTTP clients and headless browsers that I am not totally happy about, it does it's job.

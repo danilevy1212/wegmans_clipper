@@ -1,0 +1,7 @@
+FROM rust:latest
+
+WORKDIR /app
+
+USER 1000
+
+CMD ["cargo", "build", "--target", "x86_64-unknown-linux-gnu", "--release"]
