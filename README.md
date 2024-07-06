@@ -1,5 +1,9 @@
 # Wegmans Digital Coupons Auto-Clipper
 
+## WARNING
+
+I stopped going to wegmans, so this code is unmaintained.
+
 ## Description
 
 `wegmans_clipper` is a collection of utilities that automate clipping ["Digital Coupons"](https://shop.wegmans.com/shop/coupons) from the Wegmans website. 
